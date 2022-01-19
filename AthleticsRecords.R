@@ -8,7 +8,7 @@ mean(women$time)
 var(men$time)
 var(women$time)
 (var(women$time)-var(men$time))/var(women$time)*100
-
+mae(var(men$time),var(women$time))
 # Include an appropriate plot of data grouped on gender.
 par(mfrow=c(1,1))
 boxplot(data$time ~ data$sex,col=2:3, ylab = "Time (s)", xlab = "Gender", main = "Boxplots of world record times" )
@@ -38,13 +38,22 @@ anova(L2)
 # Linear Regression Models
 
 # Linear Regression men
-L_men = lm(time ~ distance , data=men)
+L_men = lm(time ~ distance, data=men)
 L_men
 # Predictions men
 preds_men = predict(L_men)
 # Mean squared prediction error (men)
 MSE_men = mean((men$time-preds_men)^2)
 MSE_men
+
+# Linear Regression men (excluding the 200m)
+L_men2 = lm(time[2:7] ~ distance[2:7] , data=men)
+L_men2
+# Predictions men
+preds_men2 = predict(L_men2)
+# Mean squared prediction error (men)
+MSE_men2 = mean((men$time[2:7]-preds_men2)^2)
+MSE_men2
 
 
 # Linear Regression women
@@ -54,6 +63,19 @@ L_women
 preds_women = predict(L_women)
 # Mean squared prediction error (women)
 MSE_women = mean((women$time-preds_women)^2);MSE_women
+
+# Linear Regression women (excluding the 200m)
+L_women2 = lm(time[2:7] ~ distance[2:7], data=women)
+L_women2
+# Predictions for women
+preds_women2 = predict(L_women2)
+# Mean squared prediction error (women)
+MSE_women2 = mean((women$time[2:7]-preds_women2)^2);MSE_women2
+
+#Relative predictions errors
+RelativeErrorWomen = ((preds_women-women$time)/preds_women)*100;RelativeErrorWomen
+RelativeErrorMen = ((preds_men-men$time)/preds_men)*100;RelativeErrorMen
+
 
 #Predict 600m
 
